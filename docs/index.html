@@ -3,13 +3,14 @@
   <head>
     <meta charset='utf-8' />
     <script src='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.15/index.global.min.js'></script>
+    <script src='https://www.jsdelivr.com/package/npm/@fullcalendar/icalendar?version=6.1.15'></script>
     <script>
 
       document.addEventListener('DOMContentLoaded', function() {
         var calendarEl = document.getElementById('calendar');
         var calendar = new FullCalendar.Calendar(calendarEl, {
           initialView: 'dayGridMonth',
-          // plugins: [dayGridPlugin, iCalendarPlugin],
+          plugins: [iCalendarPlugin],
           events: {
             url: 'https://clojureto.github.io/linkup/test.ics',
             format: 'ics'
