@@ -1,5 +1,8 @@
 (ns linkup.core
   (:require
+    [babashka.fs :as fs]
+    [cheshire.core :as json]
+    [clojure.edn :as edn]
     [clojure.string :as string])
   (:import
     [java.time Instant LocalDate LocalTime ZonedDateTime ZoneId ZoneOffset]
@@ -51,15 +54,19 @@
 
 (defn print-time-slot
   [time-slot timezone]
-  (let [{:keys [date
+  (let [{:keys [id
+                date
                 start-time
                 end-time
+                rrule
                 summary
                 location]} time-slot]
     (vprintln "BEGIN:VEVENT")
-    (vprintln (str "UID:" (:id time-slot)))
+    (vprintln (str "UID:" id))
     (vprintln (str "DTSTAMP:" (format-instant (Instant/now))))
     (vprintln (str "SUMMARY:" summary))
+    (when rrule
+      (vprintln (str "RRULE:" rrule)))
     (when location
       (vprintln (str "LOCATION:" location)))
     (vprintln (str "DTSTART:" (utc-time-string date start-time timezone)))
@@ -78,11 +85,28 @@
   (vprintln "END:VCALENDAR"))
 
 
+(defn build
+  []
+  (let [event-files (->> (fs/glob "docs/events" "*.edn")
+                         (map str))]
+    (doseq [file-name event-files]
+      (let [[_ root] (re-find #"([^/]+).edn" file-name)
+            edn (-> (slurp file-name)
+                    edn/read-string)]
+        (spit (str "docs/" root ".ics")
+              (with-out-str
+                (print-calendar [edn] "America/Toronto")))))
+    (spit "docs/index.json"
+          (json/encode (->> event-files
+                            (map (fn [s] (string/replace s "docs/" ""))))))))
 
 (comment
 
+  (re-find #"([^/]+).edn" "foo/bar/baz.edn")
+
   (spit "docs/test.ics" (with-out-str
-                          (print-calendar [{:date "2024-12-17"
+                          (print-calendar [{:id "clojureto"
+                                            :date "2024-12-17"
                                             :start-time "19:00"
                                             :end-time "21:00"
                                             :summary "Clojure Toronto"

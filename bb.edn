@@ -1,0 +1,4 @@
+{:paths ["src"]
+ :tasks
+ {:requires [[linkup.core :as linkup]]
+  build (linkup/build)}}

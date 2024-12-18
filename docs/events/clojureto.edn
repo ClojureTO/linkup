@@ -1,0 +1,6 @@
+{:id "clojureto"
+ :date "2024-12-17"
+ :rrule "FREQ=MONTHLY;INTERVAL=1;BYDAY=3TU"
+ :start-time "19:00"
+ :end-time "21:00"
+ :summary "Clojure Toronto"}
