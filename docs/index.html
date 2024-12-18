@@ -2,17 +2,20 @@
 <html lang='en'>
   <head>
     <meta charset='utf-8' />
+    <!-- <script src="https://cdn.jsdelivr.net/npm/ical.js@2.1.0/dist/ical.min.js"></script> -->
     <script src='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.15/index.global.min.js'></script>
-    <script src='https://www.jsdelivr.com/package/npm/@fullcalendar/icalendar?version=6.1.15'></script>
-    <script>
-
+    <!-- <script src='https://cdn.jsdelivr.net/npm/@fullcalendar/icalendar@6.1.15/index.global.min.js'></script> -->
+    <script type="module">
+      import icalJs from 'https://cdn.jsdelivr.net/npm/ical.js@2.1.0/+esm'
+      import fullcalendaricalendar from 'https://cdn.jsdelivr.net/npm/@fullcalendar/icalendar@6.1.15/+esm'
+      
       document.addEventListener('DOMContentLoaded', function() {
         var calendarEl = document.getElementById('calendar');
         var calendar = new FullCalendar.Calendar(calendarEl, {
           initialView: 'dayGridMonth',
-          plugins: [iCalendarPlugin],
+          plugins: [fullcalendaricalendar],
           events: {
-            url: 'https://clojureto.github.io/linkup/test.ics',
+            url: 'https://clojureto.github.io/linkup/clojureto.ics',
             format: 'ics'
           }
         });
