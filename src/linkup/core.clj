@@ -69,7 +69,7 @@
       (vprintln (str "RRULE:" rrule)))
     (when location
       (vprintln (str "LOCATION:" location)))
-    (vprintln (str "DTSTART:" (utc-time-string date start-time timezone)))
+    (vprintln (str "DTSTART;TZID=" timezone ":" (utc-time-string date start-time timezone)))
     (vprintln (str "DTEND:" (utc-time-string date end-time timezone)))
     (vprintln "END:VEVENT")))
 
